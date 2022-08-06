@@ -67,8 +67,7 @@ RUN apk update && apk add --no-cache \
   php81-xmlwriter \
   php81-xsl \
   php81-zip \
-  nginx supervisor curl tzdata htop mysql-client dcron
-
+  nginx supervisor curl tzdata htop mysql-client
 
 # Configure nginx
 COPY config/nginx.conf /etc/nginx/nginx.conf
@@ -96,10 +95,10 @@ WORKDIR /var/www/html
 COPY --chown=nobody backend/ /var/www/html/
 
 # Expose the port nginx is reachable on
-EXPOSE 80
+EXPOSE 8080
+
+# Configure a healthcheck to validate that everything is up&running
+HEALTHCHECK --timeout=10s CMD curl --silent --fail http://127.0.0.1:8080/fpm-ping
 
 # Let supervisord start nginx & php-fpm
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
-
-# Configure a healthcheck to validate that everything is up&running
-HEALTHCHECK --timeout=10s CMD curl --silent --fail http://127.0.0.1:80/fpm-ping
