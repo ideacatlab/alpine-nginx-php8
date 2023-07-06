@@ -67,7 +67,7 @@ RUN apk update && apk add --no-cache \
   php82-xmlwriter \
   php82-xsl \
   php82-zip \
-  nginx supervisor curl tzdata htop mysql-client
+  nginx supervisor curl tzdata composer htop mysql-client
 
 # Configure nginx
 COPY config/nginx.conf /etc/nginx/nginx.conf
